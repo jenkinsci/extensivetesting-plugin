@@ -24,9 +24,11 @@
 
 
 package xtc.jenkins.extensiveTesting.WebServices;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xtc.jenkins.extensiveTesting.Entities.Test;
+import xtc.jenkins.extensiveTesting.Tools.Const;
 
 import java.util.List;
 
@@ -37,15 +39,22 @@ public class RestRequest {
     private IRequester requester;
 
 
+
     /**
      * Create user session
      *
      * @return session id
      */
     public String login() throws Exception {
-        String server = serverUrl + "session/login";
-        String params = "{\"login\": \"" + test.getLogin() + "\", \"password\": \"" + test.getPassword() + "\"}";
-        return requester.httpRequest(server, params, "POST", sessionID);
+        String server = serverUrl + Const.REST_LOGIN;
+        //String params = "{\"login\": \"" + test.getLogin() + "\", \"password\": \"" + test.getPassword() + "\"}";
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(Const.LOGIN, test.getLogin());
+        jsonObject.put(Const.PWD, test.getPassword());
+        String params = jsonObject.toString();
+
+        return requester.httpRequest(server, params, Const.POST, sessionID);
     }
 
     /**
@@ -54,8 +63,8 @@ public class RestRequest {
      * @return message
      */
     public String logout() throws Exception {
-        String server = serverUrl + "session/logout";
-        return requester.httpRequest(server, null, "GET", sessionID);
+        String server = serverUrl + Const.REST_LOGOUT;
+        return requester.httpRequest(server, null, Const.GET, sessionID);
     }
 
 
@@ -66,7 +75,13 @@ public class RestRequest {
      */
     public List<String> testList() throws Exception {
         String server = serverUrl + "tests/listing";
-        String params = "{\"project-name\": \"" + test.getProjectName() + "\"}";
+        //String params = "{\"project-name\": \"" + test.getProjectName() + "\"}";
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(Const.PROJECT_NAME, test.getProjectName());
+        jsonObject.put(Const.PWD, test.getPassword());
+        String params = jsonObject.toString();
+
         String output = requester.httpRequest(server, params, "POST", sessionID);
 
         List<String> outputArray = null;
