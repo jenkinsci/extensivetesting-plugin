@@ -90,6 +90,41 @@ public class Logger {
         if(logger == null){
             logger = new Logger(logFile, taskListener, debugMod);
         }
+        logger.setLog(logFile);
+        logger.setDebug(debugMod);
+        logger.setListener(taskListener);
         return logger;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        Logger.logger = logger;
+    }
+
+    public File getLog() {
+        return log;
+    }
+
+    public void setLog(File log) {
+        this.log = log;
+    }
+
+    public TaskListener getListener() {
+        return listener;
+    }
+
+    public void setListener(TaskListener listener) {
+        this.listener = listener;
+    }
+
+    public Boolean getDebug() {
+        return debug;
+    }
+
+    public void setDebug(Boolean debug) {
+        this.debug = debug;
     }
 }
