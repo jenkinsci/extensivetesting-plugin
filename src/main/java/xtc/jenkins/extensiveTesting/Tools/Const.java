@@ -19,6 +19,7 @@ public class Const {
     public static final String SESSION_ID = "session_id";
     public static final String MESSAGE = "message";
     public static final String PASS = "pass";
+    public static final String SUCCESS = "SUCCESS";
     public static final String AUTHFAILED = "Authentification failed, please check your credentials";
     public static final String LOGINFAILED = "login problem";
     public static final String CONTENT = "Content-Type";

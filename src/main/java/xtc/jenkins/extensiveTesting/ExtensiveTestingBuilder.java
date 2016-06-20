@@ -79,11 +79,7 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
         this.debug = debug;
     }
 
-    /**
-     * We'll use this from the <tt>config.jelly</tt>.
-     *
-     * @return
-     */
+
     public String getName() {
         return testPath;
     }
