@@ -23,12 +23,12 @@
  */
 
 
-package xtc.jenkins.extensiveTesting.WebServices;
+package xtc.jenkins.extensiveTesting.webservices;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import xtc.jenkins.extensiveTesting.Entities.Test;
-import xtc.jenkins.extensiveTesting.Tools.Const;
+import xtc.jenkins.extensiveTesting.entities.Test;
+import xtc.jenkins.extensiveTesting.tools.Const;
 
 import java.util.List;
 

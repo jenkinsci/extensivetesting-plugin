@@ -1,4 +1,4 @@
-package xtc.jenkins.extensiveTesting.WebServices;
+package xtc.jenkins.extensiveTesting.webservices;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class RestRequestTest {
             ",\"project-name\":\"Common\",\"test-status\":\"complete\"" +
             ",\"test-report\":\"eNqzySjJzbGzScpPqbSzyTC0C0ktLlEoSCwuTk2x0QfybfQhUvpgdQB0Dw+i\"}";
     String serverUrl = "";
-    xtc.jenkins.extensiveTesting.Entities.Test test = new xtc.jenkins.extensiveTesting.Entities.Test("localhost", "Common", "admin", "");
+    xtc.jenkins.extensiveTesting.entities.Test test = new xtc.jenkins.extensiveTesting.entities.Test("localhost", "Common", "admin", "");
     IRequester requester = new FakeRequester();
     RestRequest restRequest = new RestRequest(serverUrl,test,requester);
 

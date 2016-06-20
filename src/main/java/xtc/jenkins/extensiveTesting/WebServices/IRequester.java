@@ -21,7 +21,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  */
-package xtc.jenkins.extensiveTesting.WebServices;
+package xtc.jenkins.extensiveTesting.webservices;
 
 public interface IRequester {
     /**

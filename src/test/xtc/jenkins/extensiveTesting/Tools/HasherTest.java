@@ -1,4 +1,4 @@
-package xtc.jenkins.extensiveTesting.Tools;
+package xtc.jenkins.extensiveTesting.tools;
 
 import org.junit.Assert;
 import org.junit.Test;

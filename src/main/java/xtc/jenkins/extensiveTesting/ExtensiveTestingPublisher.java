@@ -11,7 +11,7 @@ import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
 import hudson.tasks.Recorder;
 import org.kohsuke.stapler.DataBoundConstructor;
-import xtc.jenkins.extensiveTesting.Tools.Const;
+import xtc.jenkins.extensiveTesting.tools.Const;
 
 /**
  * Created by Blaise Cador on 20/06/2016.

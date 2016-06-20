@@ -1,4 +1,4 @@
-package xtc.jenkins.extensiveTesting.Tools;
+package xtc.jenkins.extensiveTesting.tools;
 
 /**
  * Created by Blaise Cador on 20/06/2016.
