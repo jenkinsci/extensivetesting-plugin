@@ -38,7 +38,7 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
-import xtc.jenkins.extensiveTesting.Tools.Const;
+import xtc.jenkins.extensiveTesting.tools.Const;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
