@@ -5,6 +5,7 @@ package xtc.jenkins.extensiveTesting.Tools;
  */
 public class Const {
     // Strings
+    public static final String PLUGIN_NAME = "eXtensive Testing";
     public static final String LOGIN = "login";
     public static final String PWD = "password";
     public static final String PROJECT_NAME = "project-name";

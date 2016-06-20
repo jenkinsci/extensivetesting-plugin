@@ -38,6 +38,7 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+import xtc.jenkins.extensiveTesting.Tools.Const;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -209,7 +210,7 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
          * This human readable name is used in the configuration screen.
          */
         public String getDisplayName() {
-            return "eXtensive Testing";
+            return Const.PLUGIN_NAME;
         }
 
         @Override
