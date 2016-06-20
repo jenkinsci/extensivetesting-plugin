@@ -45,7 +45,7 @@ public class RestRequest {
      *
      * @return session id
      */
-    public String login() throws Exception {
+    public String login(){
         String server = serverUrl + Const.REST_LOGIN;
         //String params = "{\"login\": \"" + test.getLogin() + "\", \"password\": \"" + test.getPassword() + "\"}";
 
@@ -62,7 +62,7 @@ public class RestRequest {
      *
      * @return message
      */
-    public String logout() throws Exception {
+    public String logout(){
         String server = serverUrl + Const.REST_LOGOUT;
         return requester.httpRequest(server, null, Const.GET, sessionID);
     }
@@ -73,8 +73,8 @@ public class RestRequest {
      *
      * @return List of String testPath
      */
-    public List<String> testList() throws Exception {
-        String server = serverUrl + "tests/listing";
+    public List<String> testList(){
+        String server = serverUrl + Const.REST_LISTING;
         //String params = "{\"project-name\": \"" + test.getProjectName() + "\"}";
 
         JSONObject jsonObject = new JSONObject();
@@ -82,11 +82,11 @@ public class RestRequest {
         jsonObject.put(Const.PWD, test.getPassword());
         String params = jsonObject.toString();
 
-        String output = requester.httpRequest(server, params, "POST", sessionID);
+        String output = requester.httpRequest(server, params, Const.POST, sessionID);
 
         List<String> outputArray = null;
         JSONObject jsonTestList = new JSONObject(output);
-        JSONArray arrayTestList = jsonTestList.getJSONArray("tests-listing");
+        JSONArray arrayTestList = jsonTestList.getJSONArray(Const.TEST_LISTING);
         for (int i = 0; i < arrayTestList.length(); i++) {
             outputArray.add(arrayTestList.getString(i));
         }
@@ -98,11 +98,16 @@ public class RestRequest {
      *
      * @return test id
      */
-    public String testRun() throws Exception {
-        String server = serverUrl + "tests/run";
-        String params = "{\"test-path\": \"" + test.getTestPath() + "\"," +
-                "\"project-name\": \"" + test.getProjectName() + "\"}";
-        return requester.httpRequest(server, params, "POST", sessionID);
+    public String testRun(){
+        String server = serverUrl + Const.REST_RUN;
+        //String params = "{\"test-path\": \"" + test.getTestPath() + "\"," + "\"project-name\": \"" + test.getProjectName() + "\"}";
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(Const.TEST_PATH, test.getTestPath());
+        jsonObject.put(Const.PROJECT_NAME, test.getProjectName());
+        String params = jsonObject.toString();
+
+        return requester.httpRequest(server, params, Const.POST, sessionID);
     }
 
     /**
@@ -110,17 +115,22 @@ public class RestRequest {
      *
      * @return Test run status 1ok 0nok
      */
-    public Integer testStatus() throws Exception {
-        String server = serverUrl + "results/test/status";
-        String params = "{\"test-id\": \"" + test.getTestId() + "\"," +
-                "\"project-name\": \"" + test.getProjectName() + "\"}";
-        String output = requester.httpRequest(server, params, "POST", sessionID);
+    public Integer testStatus(){
+        String server = serverUrl + Const.REST_RESULTS;
+        //String params = "{\"test-id\": \"" + test.getTestId() + "\"," + "\"project-name\": \"" + test.getProjectName() + "\"}";
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(Const.TEST_ID, test.getTestId());
+        jsonObject.put(Const.PROJECT_NAME, test.getProjectName());
+        String params = jsonObject.toString();
+
+        String output = requester.httpRequest(server, params, Const.POST, sessionID);
 
         JSONObject jsonLogout = new JSONObject(output);
-        String status = jsonLogout.getString("test-status");
+        String status = jsonLogout.getString(Const.TEST_STATUS);
         System.out.println(status);
 
-        if ("running".equals(status)) {
+        if (Const.RUNNING.equals(status)) {
             return 0;
         } else {
             return 1;
@@ -132,11 +142,15 @@ public class RestRequest {
      *
      * @return test report (gziped html)
      */
-    public String testReport() throws Exception {
-        String server = serverUrl + "results/test/report/html";
-        String params = "{\"test-id\": \"" + test.getTestId() + "\"," +
-                "\"project-name\": \"" + test.getProjectName() + "\"}";
-        return requester.httpRequest(server, params, "POST", sessionID);
+    public String testReport(){
+        String server = serverUrl + Const.REST_REPORT;
+       // String params = "{\"test-id\": \"" + test.getTestId() + "\"," + "\"project-name\": \"" + test.getProjectName() + "\"}";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(Const.TEST_ID, test.getTestId());
+        jsonObject.put(Const.PROJECT_NAME, test.getProjectName());
+        String params = jsonObject.toString();
+
+        return requester.httpRequest(server, params, Const.POST, sessionID);
     }
 
     /**
@@ -144,11 +158,16 @@ public class RestRequest {
      *
      * @return Verdict json string
      */
-    public String testVerdict() throws Exception {
-        String server = serverUrl + "results/test/verdict";
-        String params = "{\"test-id\": \"" + test.getTestId() + "\"," +
-                "\"project-name\": \"" + test.getProjectName() + "\"}";
-        return requester.httpRequest(server, params, "POST", sessionID);
+    public String testVerdict(){
+        String server = serverUrl + Const.REST_VERDICT;
+        //String params = "{\"test-id\": \"" + test.getTestId() + "\"," + "\"project-name\": \"" + test.getProjectName() + "\"}";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(Const.TEST_ID, test.getTestId());
+        jsonObject.put(Const.PROJECT_NAME, test.getProjectName());
+        String params = jsonObject.toString();
+
+
+        return requester.httpRequest(server, params, Const.POST, sessionID);
     }
 
 
@@ -180,6 +199,6 @@ public class RestRequest {
     }
 
     public void setSessionID(String sessionID) {
-        this.sessionID = "session_id=" + sessionID;
+        this.sessionID = Const.SESSION_ID + "=" + sessionID;
     }
 }

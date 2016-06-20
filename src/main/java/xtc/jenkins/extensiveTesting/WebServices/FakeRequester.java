@@ -32,10 +32,9 @@ public class FakeRequester implements IRequester{
      * @param method    HTTP Method (POST, GET, ...)
      * @param sessionID session ID
      * @return
-     * @throws Exception
      */
     @Override
-    public String httpRequest(String server, String params, String method, String sessionID) throws Exception {
+    public String httpRequest(String server, String params, String method, String sessionID){
         return "{\"message\":\"Log message\",\"session_id\":\"Njg1ZGRiYjcxZjcxNDQ0YmE1YjM5ZmRkYjJiMjY2ZjMzY\"," +
                 "\"tests-listing\":[\"/Basics/04_CloseBrowser.tux\",\"/Basics/01_Win_OpenApp.tux\"," +
                 "\"/Basics/05_MaximizeBrowser.tux\",\"/Basics/03_OpenBrowser.tux\",\"/Basics/02_Win_CloseApp.tux\"," +

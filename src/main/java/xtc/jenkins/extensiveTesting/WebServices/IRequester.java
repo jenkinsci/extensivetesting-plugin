@@ -32,7 +32,6 @@ public interface IRequester {
      * @param method    HTTP Method (POST, GET, ...)
      * @param sessionID session ID
      * @return
-     * @throws Exception
      */
-    String httpRequest(String server, String params, String method, String sessionID) throws Exception;
+    String httpRequest(String server, String params, String method, String sessionID);
 }

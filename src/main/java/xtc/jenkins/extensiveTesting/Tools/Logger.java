@@ -48,11 +48,12 @@ public class Logger {
      * Write Log file, Standard output and Jenkins console output
      *
      * @param message
+     * @param print
      */
     public void write(String message, Boolean print)
     {
         //TODO: faire un mode debug avec une checkbox dans jenkins
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmm"); // get current date time with Calendar()
+        DateFormat dateFormat = new SimpleDateFormat(Const.DATEFORMAT); // get current date time with Calendar()
         Calendar calendar = Calendar.getInstance(); // get current date time with Calendar()
         String now = dateFormat.format(calendar.getTime()); // get current date time with Calendar()
         message = now + "\t" + message + "\n";
@@ -75,7 +76,7 @@ public class Logger {
             fileWriter.write(message);
             fileWriter.close();
         } catch (IOException exception) {
-            System.out.println("Erreur lors de la lecture : " + exception.getMessage());
+            System.out.println(Const.FILE_ERR + exception.getMessage());
         }
     }
 

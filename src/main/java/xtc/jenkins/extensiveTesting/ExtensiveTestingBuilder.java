@@ -1,25 +1,25 @@
 /**
  * The MIT License
-
- Copyright (c) 2016, Gfi Informatique, Inc., Blaise Cador
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
+ * <p>
+ * Copyright (c) 2016, Gfi Informatique, Inc., Blaise Cador
+ * <p>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * <p>
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * <p>
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package xtc.jenkins.extensiveTesting;
 
@@ -41,6 +41,7 @@ import org.kohsuke.stapler.StaplerRequest;
 import xtc.jenkins.extensiveTesting.Entities.Session;
 import xtc.jenkins.extensiveTesting.Entities.Test;
 import xtc.jenkins.extensiveTesting.Tools.Compressor;
+import xtc.jenkins.extensiveTesting.Tools.Const;
 import xtc.jenkins.extensiveTesting.Tools.Hasher;
 import xtc.jenkins.extensiveTesting.Tools.Logger;
 import xtc.jenkins.extensiveTesting.WebServices.Requester;
@@ -56,8 +57,6 @@ import java.util.Calendar;
 
 /**
  * Sample {@link Builder}.
- * <p>
- * <p>
  * When the user configures the project and enables this builder,
  * {@link DescriptorImpl#newInstance(StaplerRequest)} is invoked
  * and a new {@link ExtensiveTestingBuilder} is created. The created
@@ -94,6 +93,8 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
 
     /**
      * We'll use this from the <tt>config.jelly</tt>.
+     *
+     * @return
      */
     public String getName() {
         return testPath;
@@ -145,12 +146,12 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
     @Override
     public void perform(Run<?, ?> build, FilePath workspace, Launcher launcher, TaskListener listener) {
 
-        File logFile = new File(workspace + "/log.txt");
+        File logFile = new File(workspace + Const.LOG_NAME);
         String jobName = build.getParent().getName().replace(" ", "%20"); // replace job name spaces for html link
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss"); // get current date time with Calendar()
+        DateFormat dateFormat = new SimpleDateFormat(Const.DATEFORMAT); // get current date time with Calendar()
         Calendar calendar = Calendar.getInstance(); // get current date time with Calendar()
         String now = dateFormat.format(calendar.getTime()); // get current date time with Calendar()
-        String reportName = now + "_report.html"; // html report file name
+        String reportName = now + Const.REPORT_SUFIX; // html report file name
         String encryptedPassword = Hasher.sha1(password); // hash password with sha1
 
         // TODO : Régler le problème de logger | Actuellement le singleton ne fonctionne pas
@@ -179,89 +180,63 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
         logger.write(printReport, debugmod);
         /***** Starts the test and stores the results *****/
         // Login
-        try {
-            login = restRequest.login();
-            org.json.JSONObject jsonLogin = new org.json.JSONObject(login);
-            session.setSession_id(jsonLogin.getString("session_id"));
-            logger.write(login, debugmod); // Json brut
-        } catch (Exception e) {
-            logger.write("login problem", debugmod);
-        } finally {
-            sleep(1);
-        }
+        login = restRequest.login();
+        sleep(1);
+        org.json.JSONObject jsonLogin = new org.json.JSONObject(login);
+        session.setSession_id(jsonLogin.getString(Const.SESSION_ID));
+        logger.write(login, debugmod); // Json brut
 
 
         if (login == null || session.getSession_id().isEmpty() || "".equals(session.getSession_id())) {
-            logger.write("Authentification failed, please check your credentials", debugmod);
+            logger.write(Const.AUTHFAILED, debugmod);
         } else {
             restRequest.setSessionID(session.getSession_id());
 
             // Launch test
-            try {
-                testRun = restRequest.testRun();
-                org.json.JSONObject jsonLaunchTest = new org.json.JSONObject(testRun);
-                test.setTestId(jsonLaunchTest.getString("test-id"));
-                logger.write(testRun, debugmod); // Json brut
-            } catch (Exception e) {
-                logger.write(e.getMessage(), debugmod);
-                logger.write("testRun problem", debugmod);
-            } finally {
-                sleep(1);
-            }
+
+            testRun = restRequest.testRun();
+            sleep(1);
+            org.json.JSONObject jsonLaunchTest = new org.json.JSONObject(testRun);
+            test.setTestId(jsonLaunchTest.getString(Const.TEST_ID));
+            logger.write(testRun, debugmod); // Json brut
+
 
             // Get test status
-            try {
-                do {
-                    testStatus = restRequest.testStatus();
-                    sleep(1);
-                } while (testStatus != 1);
-                test.setTestStatus(testStatus);
-            } catch (Exception e) {
-                logger.write(e.getMessage(), debugmod);
-                logger.write("testStatus problem", debugmod);
-            } finally {
+
+            do {
+                testStatus = restRequest.testStatus();
                 sleep(1);
-            }
+            } while (testStatus != 1);
+            test.setTestStatus(testStatus);
+
 
             // Get test verdict
-            try {
-                testVerdict = restRequest.testVerdict();
-                org.json.JSONObject jsonTestVerdict = new org.json.JSONObject(testVerdict);
-                test.setTestVerdict(jsonTestVerdict.getString("test-result"));
-                logger.write(testVerdict, debugmod); // Json brut
-            } catch (Exception e) {
-                logger.write(e.getMessage(), debugmod);
-                logger.write("testVerdict problem", debugmod);
-            } finally {
-                sleep(1);
-            }
+
+            testVerdict = restRequest.testVerdict();
+            sleep(1);
+            org.json.JSONObject jsonTestVerdict = new org.json.JSONObject(testVerdict);
+            test.setTestVerdict(jsonTestVerdict.getString(Const.TEST_RESULT));
+            logger.write(testVerdict, debugmod); // Json brut
+
 
             // Get test report
-            try {
-                testReport = restRequest.testReport();
-                org.json.JSONObject jsonTestReport = new org.json.JSONObject(testReport);
-                report = jsonTestReport.getString("test-report");
-                test.setTestReport(report);
-                logger.write(testReport, debugmod); // Json brut
-            } catch (Exception e) {
-                logger.write(e.getMessage(), debugmod);
-                logger.write("testReport problem", debugmod);
-            } finally {
-                sleep(1);
-            }
+
+            testReport = restRequest.testReport();
+            sleep(1);
+            org.json.JSONObject jsonTestReport = new org.json.JSONObject(testReport);
+            report = jsonTestReport.getString(Const.TEST_REPORT);
+            test.setTestReport(report);
+            logger.write(testReport, debugmod); // Json brut
+
 
             // Logout
-            try {
-                logout = restRequest.logout();
-                org.json.JSONObject jsonLogout = new org.json.JSONObject(logout);
-                session.setMessage(jsonLogout.getString("message"));
-                logger.write(logout, debugmod); // Json brut
-            } catch (Exception e) {
-                logger.write(e.getMessage(), debugmod);
-                logger.write("logout problem", debugmod);
-            } finally {
-                sleep(1);
-            }
+
+            logout = restRequest.logout();
+            sleep(1);
+            org.json.JSONObject jsonLogout = new org.json.JSONObject(logout);
+            session.setMessage(jsonLogout.getString(Const.MESSAGE));
+            logger.write(logout, debugmod); // Json brut
+
         }
 
 
@@ -274,7 +249,7 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
             fileWriter.write(htmlContent);
             fileWriter.close();
         } catch (IOException exception) {
-            System.out.println("Erreur lors de la lecture : " + exception.getMessage());
+            System.out.println(Const.FILE_ERR + exception.getMessage());
         }
 
 
@@ -299,7 +274,7 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
 
 
         /** SET BUILD STATUS **/
-        if (!"pass".equals(test.getTestVerdict())){
+        if (!Const.PASS.equals(test.getTestVerdict())) {
             Result result = Result.FAILURE;
             build.setResult(result);
         }
