@@ -1,15 +1,15 @@
 package xtc.jenkins.extensiveTesting;
 
+import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
+import hudson.model.AsyncAperiodicWork;
+import hudson.model.PeriodicWork;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import xtc.jenkins.extensiveTesting.entities.Session;
 import xtc.jenkins.extensiveTesting.entities.Test;
-import xtc.jenkins.extensiveTesting.tools.Compressor;
-import xtc.jenkins.extensiveTesting.tools.Const;
-import xtc.jenkins.extensiveTesting.tools.Hasher;
-import xtc.jenkins.extensiveTesting.tools.Logger;
+import xtc.jenkins.extensiveTesting.tools.*;
 import xtc.jenkins.extensiveTesting.webservices.Requester;
 import xtc.jenkins.extensiveTesting.webservices.RestRequest;
 
@@ -91,7 +91,7 @@ public class ExtensiveTestingTester {
         /***** Starts the test and stores the results *****/
         // Login
         login = restRequest.login();
-        sleep(1);
+        //sleep(1);
         org.json.JSONObject jsonLogin = new org.json.JSONObject(login);
         session.setSession_id(jsonLogin.getString(Const.SESSION_ID));
         logger.write(login, debugmod); // Json brut
@@ -105,25 +105,31 @@ public class ExtensiveTestingTester {
             // Launch test
 
             testRun = restRequest.testRun();
-            sleep(1);
+            //sleep(1);
             org.json.JSONObject jsonLaunchTest = new org.json.JSONObject(testRun);
             test.setTestId(jsonLaunchTest.getString(Const.TEST_ID));
             logger.write(testRun, debugmod); // Json brut
 
 
             // Get test status
+            // TODO : PeriodicWork
 
+
+            Looper getStatus = new Looper(restRequest);
+            getStatus.run();
+
+            /*
             do {
                 testStatus = restRequest.testStatus();
                 sleep(1);
             } while (testStatus != 1);
             test.setTestStatus(testStatus);
-
+            */
 
             // Get test verdict
 
             testVerdict = restRequest.testVerdict();
-            sleep(1);
+            //sleep(1);
             org.json.JSONObject jsonTestVerdict = new org.json.JSONObject(testVerdict);
             test.setTestVerdict(jsonTestVerdict.getString(Const.TEST_RESULT));
             logger.write(testVerdict, debugmod); // Json brut
@@ -132,7 +138,7 @@ public class ExtensiveTestingTester {
             // Get test report
 
             testReport = restRequest.testReport();
-            sleep(1);
+            //sleep(1);
             org.json.JSONObject jsonTestReport = new org.json.JSONObject(testReport);
             report = jsonTestReport.getString(Const.TEST_REPORT);
             test.setTestReport(report);
@@ -142,7 +148,7 @@ public class ExtensiveTestingTester {
             // Logout
 
             logout = restRequest.logout();
-            sleep(1);
+            //sleep(1);
             org.json.JSONObject jsonLogout = new org.json.JSONObject(logout);
             session.setMessage(jsonLogout.getString(Const.MESSAGE));
             logger.write(logout, debugmod); // Json brut

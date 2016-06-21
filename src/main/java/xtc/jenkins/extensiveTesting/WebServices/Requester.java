@@ -44,7 +44,7 @@ public class Requester implements IRequester {
      * @return
      */
     public String httpRequest(String server, String params, String method, String sessionID) {
-
+        // TODO : Apache common httpclient
         // TODO : pour tester
         Logger logger = Logger.importation();
         URL url = null;

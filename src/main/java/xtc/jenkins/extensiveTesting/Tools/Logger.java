@@ -36,6 +36,7 @@ import java.util.Calendar;
 /**
  *
  * TODO : Singleton
+ * TODO : Voir logger jenkins
  */
 public class Logger {
     private static Logger logger;

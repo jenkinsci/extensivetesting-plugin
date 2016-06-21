@@ -28,6 +28,7 @@ package xtc.jenkins.extensiveTesting.webservices;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xtc.jenkins.extensiveTesting.entities.Test;
+import xtc.jenkins.extensiveTesting.tools.ApacheHttpClientGet;
 import xtc.jenkins.extensiveTesting.tools.Const;
 
 import java.util.List;
@@ -64,7 +65,8 @@ public class RestRequest {
      */
     public String logout(){
         String server = serverUrl + Const.REST_LOGOUT;
-        return requester.httpRequest(server, null, Const.GET, sessionID);
+        //return requester.httpRequest(server, null, Const.GET, sessionID);
+        return ApacheHttpClientGet.request(serverUrl,Const.REST_LOGOUT,sessionID);
     }
 
 

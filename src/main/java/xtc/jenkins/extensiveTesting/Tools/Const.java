@@ -5,7 +5,7 @@ package xtc.jenkins.extensiveTesting.tools;
  */
 public class Const {
     // Strings TODO : Version EN/FR
-    public static final String PLUGIN_NAME = "eXtensive Testing";
+    public static final String PLUGIN_NAME = "Launch eXtensive Testing job";
     public static final String LOGIN = "login";
     public static final String PWD = "password";
     public static final String PROJECT_NAME = "project-name";
@@ -22,19 +22,19 @@ public class Const {
     public static final String SUCCESS = "SUCCESS";
     public static final String AUTHFAILED = "Authentification failed, please check your credentials";
     public static final String LOGINFAILED = "login problem";
-    public static final String LOGGERFAILED = "Le logger n'existe pas";
+    public static final String LOGGERFAILED = "Logger does not exist";
     public static final String CONTENT = "Content-Type";
-    public static final String CONTENT_TYPE = "application/json; charset=utf-8";
+    public static final String CONTENT_TYPE = "application/json";//; charset=utf-8";
     public static final String COOKIE = "Cookie";
     public static final String UTF8 = "UTF-8";
     public static final String DATEFORMAT = "yyyyMMdd_HHmmss";
     public static final String REPORT_SUFIX = "_report.html";
     public static final String LOG_NAME = "/log.txt";
-    public static final String FILE_ERR = "Erreur lors de la lecture : ";
-    public static final String EXCEPT_URL = "Erreur d'URL";
-    public static final String EXCEPT_ENCODING = "Erreur d'encodage";
-    public static final String EXCEPT_PROTOCOL = "Erreur de protocole";
-    public static final String EXCEPT_IO = "Le serveur n'est pas joignable.";
+    public static final String FILE_ERR = "Error reading file : ";
+    public static final String EXCEPT_URL = "URL exception";
+    public static final String EXCEPT_ENCODING = "Encoding exception";
+    public static final String EXCEPT_PROTOCOL = "Protocol exception";
+    public static final String EXCEPT_IO = "IO exception";
     public static final String KO = "KO";
 
 
