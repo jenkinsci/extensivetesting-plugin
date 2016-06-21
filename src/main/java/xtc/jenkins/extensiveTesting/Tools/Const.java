@@ -4,7 +4,7 @@ package xtc.jenkins.extensiveTesting.tools;
  * Created by Blaise Cador on 20/06/2016.
  */
 public class Const {
-    // Strings
+    // Strings TODO : Version EN/FR
     public static final String PLUGIN_NAME = "eXtensive Testing";
     public static final String LOGIN = "login";
     public static final String PWD = "password";
