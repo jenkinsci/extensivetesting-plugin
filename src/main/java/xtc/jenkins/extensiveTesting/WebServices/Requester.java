@@ -24,6 +24,7 @@
 package xtc.jenkins.extensiveTesting.webservices;
 
 import xtc.jenkins.extensiveTesting.tools.Const;
+import xtc.jenkins.extensiveTesting.tools.Logger;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -44,6 +45,8 @@ public class Requester implements IRequester {
      */
     public String httpRequest(String server, String params, String method, String sessionID) {
 
+        // TODO : pour tester
+        Logger logger = Logger.importation();
         URL url = null;
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -94,13 +97,17 @@ public class Requester implements IRequester {
 
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            logger.write(Const.EXCEPT_URL,true);
+            //e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.write(Const.EXCEPT_ENCODING,true);
+            //e.printStackTrace();
         } catch (ProtocolException e) {
-            e.printStackTrace();
+            logger.write(Const.EXCEPT_PROTOCOL,true);
+            //e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.write(Const.EXCEPT_IO,true);
+            //e.printStackTrace();
         } finally {
             return stringBuilder.toString();
         }

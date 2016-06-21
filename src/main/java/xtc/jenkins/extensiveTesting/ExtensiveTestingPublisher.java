@@ -6,6 +6,7 @@ import hudson.Launcher;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.BuildListener;
+import hudson.model.Result;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
@@ -16,7 +17,7 @@ import xtc.jenkins.extensiveTesting.tools.Const;
 /**
  * Created by Blaise Cador on 20/06/2016.
  */
-public class ExtensiveTestingPublisher extends Recorder{
+public class ExtensiveTestingPublisher extends Recorder {
 
     private final String testPath;
     private final String login;
@@ -41,24 +42,25 @@ public class ExtensiveTestingPublisher extends Recorder{
     }
 
 
-
     @Override
     public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener) {
 
         FilePath workspace = build.getWorkspace();
+        Result resultFailure = Result.FAILURE;
 
-        if( Const.SUCCESS.equals( build.getResult().toString() ) )
-        {
-            ExtensiveTestingTester test = new ExtensiveTestingTester(testPath,login,password,serverUrl,testId, projectName, hostUrl, debug);
-            Boolean testVerdict = test.perform(build,workspace,launcher,listener);
-            return true;
-        }else{
-            listener.getLogger().println( build.getResult().toString() );
-            return false;
+        if (Const.SUCCESS.equals(build.getResult().toString())) {
+            ExtensiveTestingTester test = new ExtensiveTestingTester(testPath, login, password, serverUrl, testId, projectName, hostUrl, debug);
+            Boolean testVerdict = test.perform(build, workspace, launcher, listener);
+
+            if (!testVerdict) {
+                build.setResult(resultFailure);
+            }
+
+        } else {
+            build.setResult(resultFailure);
         }
+        return true;
     }
-
-
 
 
     @Override

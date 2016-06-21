@@ -34,7 +34,8 @@ public class ExtensiveTestingTester {
     private Boolean debug;
 
 
-    public ExtensiveTestingTester(String testPath, String login, String password, String serverUrl, String testId, String projectName, String hostUrl, Boolean debug) {
+    public ExtensiveTestingTester(String testPath, String login, String password, String serverUrl,
+                                  String testId, String projectName, String hostUrl, Boolean debug) {
         this.testPath = testPath;
         this.login = login;
         this.password = password;

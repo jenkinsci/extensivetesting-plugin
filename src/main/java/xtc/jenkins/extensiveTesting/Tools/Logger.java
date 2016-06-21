@@ -96,6 +96,14 @@ public class Logger {
         return logger;
     }
 
+    // TODO : pour tester
+    public static Logger importation(){
+        if(logger == null){
+            System.out.println(Const.LOGGERFAILED);
+        }
+        return logger;
+    }
+
     public static Logger getLogger() {
         return logger;
     }
