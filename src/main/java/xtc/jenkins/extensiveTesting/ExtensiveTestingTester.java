@@ -191,8 +191,8 @@ public class ExtensiveTestingTester {
 
 
 
-        printReport += HyperlinkNote.encodeTo("job/" + jobName + "/ws/" + reportName,"Test Report") + "\n";
-        printReport += HyperlinkNote.encodeTo("job/" + jobName + "/ws/" + "log.txt","Log file") + "\n";
+        printReport += HyperlinkNote.encodeTo("/job/" + jobName + "/ws/" + reportName,"Test Report") + "\n";
+        printReport += HyperlinkNote.encodeTo("/job/" + jobName + "/ws/" + "log.txt","Log file") + "\n";
 
 
         /*
