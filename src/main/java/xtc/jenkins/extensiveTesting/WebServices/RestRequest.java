@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import xtc.jenkins.extensiveTesting.entities.Test;
 import xtc.jenkins.extensiveTesting.tools.ApacheHttpClientGet;
+import xtc.jenkins.extensiveTesting.tools.ApacheHttpClientPost;
 import xtc.jenkins.extensiveTesting.tools.Const;
 
 import java.util.List;
@@ -55,7 +56,8 @@ public class RestRequest {
         jsonObject.put(Const.PWD, test.getPassword());
         String params = jsonObject.toString();
 
-        return requester.httpRequest(server, params, Const.POST, sessionID);
+        //return requester.httpRequest(server, params, Const.POST, sessionID);
+        return ApacheHttpClientPost.request(serverUrl,Const.REST_LOGIN,params,sessionID);
     }
 
     /**
@@ -109,7 +111,8 @@ public class RestRequest {
         jsonObject.put(Const.PROJECT_NAME, test.getProjectName());
         String params = jsonObject.toString();
 
-        return requester.httpRequest(server, params, Const.POST, sessionID);
+        //return requester.httpRequest(server, params, Const.POST, sessionID);
+        return ApacheHttpClientPost.request(serverUrl,Const.REST_RUN,params,sessionID);
     }
 
     /**
@@ -126,7 +129,8 @@ public class RestRequest {
         jsonObject.put(Const.PROJECT_NAME, test.getProjectName());
         String params = jsonObject.toString();
 
-        String output = requester.httpRequest(server, params, Const.POST, sessionID);
+        //String output = requester.httpRequest(server, params, Const.POST, sessionID);
+        String output =  ApacheHttpClientPost.request(serverUrl,Const.REST_RESULTS,params,sessionID);
 
         JSONObject jsonLogout = new JSONObject(output);
         String status = jsonLogout.getString(Const.TEST_STATUS);
@@ -152,7 +156,8 @@ public class RestRequest {
         jsonObject.put(Const.PROJECT_NAME, test.getProjectName());
         String params = jsonObject.toString();
 
-        return requester.httpRequest(server, params, Const.POST, sessionID);
+        //return requester.httpRequest(server, params, Const.POST, sessionID);
+        return ApacheHttpClientPost.request(serverUrl,Const.REST_REPORT,params,sessionID);
     }
 
     /**
@@ -169,7 +174,8 @@ public class RestRequest {
         String params = jsonObject.toString();
 
 
-        return requester.httpRequest(server, params, Const.POST, sessionID);
+        //return requester.httpRequest(server, params, Const.POST, sessionID);
+        return ApacheHttpClientPost.request(serverUrl,Const.REST_VERDICT,params,sessionID);
     }
 
 

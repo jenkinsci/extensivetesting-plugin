@@ -139,7 +139,7 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
 
 
 
-        /*
+
         ExtensiveTestingTester test = new ExtensiveTestingTester(testPath,login,password,serverUrl,testId, projectName, hostUrl, debug);
 
         Boolean testVerdict = test.perform(build,workspace,launcher,listener);
@@ -149,7 +149,7 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
             Result result = Result.FAILURE;
             build.setResult(result);
         }
-        */
+
     }
 
 

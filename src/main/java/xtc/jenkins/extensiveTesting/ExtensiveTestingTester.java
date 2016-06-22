@@ -1,15 +1,15 @@
 package xtc.jenkins.extensiveTesting;
 
-import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
-import hudson.model.AsyncAperiodicWork;
-import hudson.model.PeriodicWork;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import xtc.jenkins.extensiveTesting.entities.Session;
 import xtc.jenkins.extensiveTesting.entities.Test;
-import xtc.jenkins.extensiveTesting.tools.*;
+import xtc.jenkins.extensiveTesting.tools.Compressor;
+import xtc.jenkins.extensiveTesting.tools.Const;
+import xtc.jenkins.extensiveTesting.tools.Hasher;
+import xtc.jenkins.extensiveTesting.tools.Logger;
 import xtc.jenkins.extensiveTesting.webservices.Requester;
 import xtc.jenkins.extensiveTesting.webservices.RestRequest;
 
@@ -115,16 +115,16 @@ public class ExtensiveTestingTester {
             // TODO : PeriodicWork
 
 
-            Looper getStatus = new Looper(restRequest);
-            getStatus.run();
+            //Looper getStatus = new Looper(restRequest);
+            //getStatus.run();
 
-            /*
+
             do {
                 testStatus = restRequest.testStatus();
-                sleep(1);
+                //sleep(1);
             } while (testStatus != 1);
             test.setTestStatus(testStatus);
-            */
+
 
             // Get test verdict
 
