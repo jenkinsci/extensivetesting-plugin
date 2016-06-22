@@ -34,7 +34,7 @@ public class Test {
     @SerializedName("test-result")
     private String testResult;
     @SerializedName("test-status")
-    private Integer testStatus;
+    private String testStatus;
     @SerializedName("test-report")
     private String testReport;
     private String testPath;
@@ -71,10 +71,10 @@ public class Test {
     public void setTestResult(String testResult) {
         this.testResult = testResult;
     }
-    public Integer getTestStatus() {
+    public String getTestStatus() {
         return testStatus;
     }
-    public void setTestStatus(Integer testStatus) {
+    public void setTestStatus(String testStatus) {
         this.testStatus = testStatus;
     }
     public String getTestReport() {

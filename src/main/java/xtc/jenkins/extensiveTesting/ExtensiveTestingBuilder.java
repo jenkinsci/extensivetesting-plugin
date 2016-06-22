@@ -61,21 +61,19 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
     private final String login;
     private final String password;
     private final String serverUrl;
-    private final String testId;
     private final String projectName;
-    private final String hostUrl;
     private final Boolean debug;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public ExtensiveTestingBuilder(String testPath, String login, String password, String serverUrl, String testId, String projectName, String hostUrl, Boolean debug) {
+    public ExtensiveTestingBuilder(
+            String testPath, String login, String password, String serverUrl,
+            String projectName, Boolean debug) {
         this.testPath = testPath;
         this.login = login;
         this.password = password;
         this.serverUrl = serverUrl;
-        this.testId = testId;
         this.projectName = projectName;
-        this.hostUrl = hostUrl;
         this.debug = debug;
     }
 
@@ -96,16 +94,8 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
         return serverUrl;
     }
 
-    public String getTestId() {
-        return testId;
-    }
-
     public String getProjectName() {
         return projectName;
-    }
-
-    public String getHostUrl() {
-        return hostUrl;
     }
 
     public String getTestPath() {
@@ -123,26 +113,19 @@ public class ExtensiveTestingBuilder extends Builder implements SimpleBuildStep 
      * @param workspace Project workspace
      * @param launcher  Project launcher
      * @param listener  Project listener
-     *                  <p>
-     *                  TODO : Il serait possible de creer un job particulier pour le test
-     *                  TODO : qui serait lance apres le job de build de l'application
+     *
      */
     @Override
     public void perform(Run<?, ?> build, FilePath workspace, Launcher launcher, TaskListener listener) {
 
-
-        String var = null;
-
-        var = build.getFullDisplayName();
-
-        listener.getLogger().println(var);
-
-
-
-
-        ExtensiveTestingTester test = new ExtensiveTestingTester(testPath,login,password,serverUrl,testId, projectName, hostUrl, debug);
-
-        Boolean testVerdict = test.perform(build,workspace,launcher,listener);
+        ExtensiveTestingTester test = new ExtensiveTestingTester(
+                testPath, login, password, serverUrl, projectName, debug);
+        Boolean testVerdict = null;
+        try {
+            testVerdict = test.perform(build,workspace,launcher,listener);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // SET BUILD STATUS
         if (!testVerdict) {

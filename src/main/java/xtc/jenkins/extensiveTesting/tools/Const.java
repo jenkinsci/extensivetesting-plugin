@@ -24,7 +24,7 @@ public class Const {
     public static final String LOGINFAILED = "login problem";
     public static final String LOGGERFAILED = "Logger does not exist";
     public static final String CONTENT = "Content-Type";
-    public static final String CONTENT_TYPE = "application/json";//; charset=utf-8";
+    public static final String CONTENT_TYPE = "application/json";
     public static final String COOKIE = "Cookie";
     public static final String UTF8 = "UTF-8";
     public static final String DATEFORMAT = "yyyyMMdd_HHmmss";
@@ -36,6 +36,9 @@ public class Const {
     public static final String EXCEPT_PROTOCOL = "Protocol exception";
     public static final String EXCEPT_IO = "IO exception";
     public static final String KO = "KO";
+    public static final String HTTPERR = "Failed : HTTP error code : ";
+    public static final String ACCEPT = "accept";
+    public static final String SERVOUT = "Output from Server .... \n";
 
 
 

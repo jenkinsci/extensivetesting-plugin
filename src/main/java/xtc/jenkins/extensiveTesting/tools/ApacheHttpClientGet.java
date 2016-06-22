@@ -1,13 +1,13 @@
 package xtc.jenkins.extensiveTesting.tools;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class ApacheHttpClientGet {
 
@@ -18,7 +18,7 @@ public class ApacheHttpClientGet {
 
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpGet getRequest = new HttpGet(url + method);
-            getRequest.addHeader("accept", Const.CONTENT_TYPE);
+            getRequest.addHeader(Const.ACCEPT, Const.CONTENT_TYPE);
             if (null != cookie) {
                 getRequest.addHeader(Const.COOKIE, cookie);
             }
@@ -26,14 +26,14 @@ public class ApacheHttpClientGet {
             HttpResponse response = httpClient.execute(getRequest);
 
             if (response.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : "
+                throw new RuntimeException(Const.HTTPERR
                         + response.getStatusLine().getStatusCode());
             }
 
             BufferedReader br = new BufferedReader(
                     new InputStreamReader((response.getEntity().getContent())));
 
-            System.out.println("Output from Server .... \n");
+            System.out.println(Const.SERVOUT);
 
 
             while ((output = br.readLine()) != null) {

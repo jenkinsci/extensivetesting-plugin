@@ -14,6 +14,8 @@ import hudson.tasks.Recorder;
 import org.kohsuke.stapler.DataBoundConstructor;
 import xtc.jenkins.extensiveTesting.tools.Const;
 
+import java.io.IOException;
+
 /**
  * Created by Blaise Cador on 20/06/2016.
  */
@@ -23,21 +25,17 @@ public class ExtensiveTestingPublisher extends Recorder {
     private final String login;
     private final String password;
     private final String serverUrl;
-    private final String testId;
     private final String projectName;
-    private final String hostUrl;
     private final Boolean debug;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public ExtensiveTestingPublisher(String testPath, String login, String password, String serverUrl, String testId, String projectName, String hostUrl, Boolean debug) {
+    public ExtensiveTestingPublisher(String testPath, String login, String password, String serverUrl, String testId, String projectName, Boolean debug) {
         this.testPath = testPath;
         this.login = login;
         this.password = password;
         this.serverUrl = serverUrl;
-        this.testId = testId;
         this.projectName = projectName;
-        this.hostUrl = hostUrl;
         this.debug = debug;
     }
 
@@ -49,8 +47,13 @@ public class ExtensiveTestingPublisher extends Recorder {
         Result resultFailure = Result.FAILURE;
 
         if (Const.SUCCESS.equals(build.getResult().toString())) {
-            ExtensiveTestingTester test = new ExtensiveTestingTester(testPath, login, password, serverUrl, testId, projectName, hostUrl, debug);
-            Boolean testVerdict = test.perform(build, workspace, launcher, listener);
+            ExtensiveTestingTester test = new ExtensiveTestingTester(testPath, login, password, serverUrl, projectName, debug);
+            Boolean testVerdict = null;
+            try {
+                testVerdict = test.perform(build, workspace, launcher, listener);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             if (!testVerdict) {
                 build.setResult(resultFailure);

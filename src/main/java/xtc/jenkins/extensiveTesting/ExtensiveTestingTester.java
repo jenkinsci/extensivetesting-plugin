@@ -2,6 +2,7 @@ package xtc.jenkins.extensiveTesting;
 
 import hudson.FilePath;
 import hudson.Launcher;
+import hudson.console.HyperlinkNote;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import xtc.jenkins.extensiveTesting.entities.Session;
@@ -28,21 +29,17 @@ public class ExtensiveTestingTester {
     private String login;
     private String password;
     private String serverUrl;
-    private String testId;
     private String projectName;
-    private String hostUrl;
     private Boolean debug;
 
 
     public ExtensiveTestingTester(String testPath, String login, String password, String serverUrl,
-                                  String testId, String projectName, String hostUrl, Boolean debug) {
+                                  String projectName, Boolean debug) {
         this.testPath = testPath;
         this.login = login;
         this.password = password;
         this.serverUrl = serverUrl;
-        this.testId = testId;
         this.projectName = projectName;
-        this.hostUrl = hostUrl;
         this.debug = debug;
     }
 
@@ -55,7 +52,8 @@ public class ExtensiveTestingTester {
      * @param listener
      * @return
      */
-    public Boolean perform(Run<?, ?> build, FilePath workspace, Launcher launcher, TaskListener listener) {
+    public Boolean perform(Run<?, ?> build, FilePath workspace, Launcher launcher, TaskListener listener)
+            throws IOException {
 
         File logFile = new File(workspace + Const.LOG_NAME);
         String jobName = build.getParent().getName().replace(" ", "%20"); // replace job name spaces for html link
@@ -74,12 +72,13 @@ public class ExtensiveTestingTester {
         Session session = new Session();
 
         // API Results Methods
-        String login = null;
-        String testRun = null;
-        Integer testStatus;
-        String testVerdict = null;
-        String testReport = null;
-        String logout = null;
+        String login;
+        String testRun;
+        String testStatus;
+        Boolean testIsRunning;
+        String testVerdict;
+        String testReport;
+        String logout;
         String report = null;
         String printReport = "#### " + testPath + "###\n";
         Boolean printable = true;
@@ -114,16 +113,26 @@ public class ExtensiveTestingTester {
             // Get test status
             // TODO : PeriodicWork
 
-
-            //Looper getStatus = new Looper(restRequest);
-            //getStatus.run();
-
-
             do {
                 testStatus = restRequest.testStatus();
-                //sleep(1);
-            } while (testStatus != 1);
+                org.json.JSONObject jsonObject = new org.json.JSONObject(testStatus);
+                testStatus = jsonObject.getString(Const.TEST_STATUS);
+                System.out.println(testStatus);
+
+                if (test.getTestId().equals(jsonObject.getString(Const.TEST_ID))) {
+                    if (Const.RUNNING.equals(testStatus)) {
+                        testIsRunning = true;
+                    } else {
+                        testIsRunning = false;
+                    }
+                }else{
+                    testIsRunning = false;
+                    throw new IOException();
+                }
+            } while (testIsRunning);
+
             test.setTestStatus(testStatus);
+
 
 
             // Get test verdict
@@ -179,23 +188,28 @@ public class ExtensiveTestingTester {
         printReport += "Getting test report" + "\n";
         printReport += "Build duration = " + build.getDurationString() + "\n";
         printReport += "Message = " + session.getMessage() + "\n";
+
+
+
+        printReport += HyperlinkNote.encodeTo("job/" + jobName + "/ws/" + reportName,"Test Report") + "\n";
+        printReport += HyperlinkNote.encodeTo("job/" + jobName + "/ws/" + "log.txt","Log file") + "\n";
+
+
+        /*
         printReport += "Test Report : " + "\n";
         printReport += hostUrl + "job/" + jobName + "/ws/" + reportName + "\n";
         printReport += "Log file : " + "\n";
         printReport += hostUrl + "job/" + jobName + "/ws/" + "log.txt" + "\n" + "\n";
-
+        */
 
         /***** Print results and log pages *****/
         logger.write(printReport, printable);
 
-        if (Const.PASS.equals(test.getTestVerdict())) {
-            return true;
-        }else{
-            return false;
-        }
+        return Const.PASS.equals(test.getTestVerdict());
 
 
     }
+
     /**
      * Temporary stop the program
      *
@@ -209,5 +223,6 @@ public class ExtensiveTestingTester {
             e.printStackTrace();
         }
     }
+
 
 }

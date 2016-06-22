@@ -118,9 +118,9 @@ public class RestRequest {
     /**
      * Get a test status ( running , not running , complete )
      *
-     * @return Test run status 1ok 0nok
+     * @return Test run status
      */
-    public Integer testStatus(){
+    public String testStatus(){
         String server = serverUrl + Const.REST_RESULTS;
         //String params = "{\"test-id\": \"" + test.getTestId() + "\"," + "\"project-name\": \"" + test.getProjectName() + "\"}";
 
@@ -132,15 +132,9 @@ public class RestRequest {
         //String output = requester.httpRequest(server, params, Const.POST, sessionID);
         String output =  ApacheHttpClientPost.request(serverUrl,Const.REST_RESULTS,params,sessionID);
 
-        JSONObject jsonLogout = new JSONObject(output);
-        String status = jsonLogout.getString(Const.TEST_STATUS);
-        System.out.println(status);
 
-        if (Const.RUNNING.equals(status)) {
-            return 0;
-        } else {
-            return 1;
-        }
+
+        return output;
     }
 
     /**

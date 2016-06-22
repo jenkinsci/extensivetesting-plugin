@@ -18,7 +18,6 @@ public class ApacheHttpClientPost {
 
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost postRequest = new HttpPost(url + method);
-                //    "http://localhost:8080/RESTfulExample/json/product/post");
 
             StringEntity input = new StringEntity(params);
             if (null != cookie) {
@@ -30,7 +29,7 @@ public class ApacheHttpClientPost {
             HttpResponse response = httpClient.execute(postRequest);
 
             if (response.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : "
+                throw new RuntimeException(Const.HTTPERR
                         + response.getStatusLine().getStatusCode());
             }
 
@@ -38,7 +37,7 @@ public class ApacheHttpClientPost {
                     new InputStreamReader((response.getEntity().getContent())));
 
             String output;
-            System.out.println("Output from Server .... \n");
+            System.out.println(Const.SERVOUT);
             while ((output = br.readLine()) != null) {
                 System.out.println(output);
                 stringBuilder.append(output);
