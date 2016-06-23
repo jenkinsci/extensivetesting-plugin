@@ -39,6 +39,29 @@ public class ExtensiveTestingPublisher extends Recorder {
         this.debug = debug;
     }
 
+    public String getTestPath() {
+        return testPath;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getServerUrl() {
+        return serverUrl;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public Boolean getDebug() {
+        return debug;
+    }
 
     @Override
     public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener) {

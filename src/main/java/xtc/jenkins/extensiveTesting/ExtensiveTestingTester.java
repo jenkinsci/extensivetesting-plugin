@@ -11,8 +11,7 @@ import xtc.jenkins.extensiveTesting.tools.Compressor;
 import xtc.jenkins.extensiveTesting.tools.Const;
 import xtc.jenkins.extensiveTesting.tools.Hasher;
 import xtc.jenkins.extensiveTesting.tools.Logger;
-import xtc.jenkins.extensiveTesting.webservices.Requester;
-import xtc.jenkins.extensiveTesting.webservices.RestRequest;
+import xtc.jenkins.extensiveTesting.webservices.RestRequester;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -67,8 +66,7 @@ public class ExtensiveTestingTester {
 
 
         Test test = new Test(testPath, projectName, login, encryptedPassword);
-        final Requester requester = new Requester(); // Http requester
-        final RestRequest restRequest = new RestRequest(serverUrl, test, requester); // Rest requester
+        final RestRequester restRequester = new RestRequester(serverUrl, test); // Rest requester
         Session session = new Session();
 
         // API Results Methods
@@ -89,44 +87,40 @@ public class ExtensiveTestingTester {
         logger.write(printReport, debugmod);
         /***** Starts the test and stores the results *****/
         // Login
-        login = restRequest.login();
-        //sleep(1);
+        login = restRequester.login();
         org.json.JSONObject jsonLogin = new org.json.JSONObject(login);
         session.setSession_id(jsonLogin.getString(Const.SESSION_ID));
-        logger.write(login, debugmod); // Json brut
+        logger.write(login, debugmod); // Raw json
 
 
         if (login == null || session.getSession_id().isEmpty() || "".equals(session.getSession_id())) {
             logger.write(Const.AUTHFAILED, debugmod);
         } else {
-            restRequest.setSessionID(session.getSession_id());
+            restRequester.setSessionID(session.getSession_id());
 
             // Launch test
 
-            testRun = restRequest.testRun();
-            //sleep(1);
+            testRun = restRequester.testRun();
             org.json.JSONObject jsonLaunchTest = new org.json.JSONObject(testRun);
             test.setTestId(jsonLaunchTest.getString(Const.TEST_ID));
-            logger.write(testRun, debugmod); // Json brut
+            logger.write(testRun, debugmod); // Raw json
 
 
             // Get test status
-            // TODO : PeriodicWork
 
             do {
-                testStatus = restRequest.testStatus();
+                testStatus = restRequester.testStatus();
                 org.json.JSONObject jsonObject = new org.json.JSONObject(testStatus);
                 testStatus = jsonObject.getString(Const.TEST_STATUS);
                 System.out.println(testStatus);
 
                 if (test.getTestId().equals(jsonObject.getString(Const.TEST_ID))) {
-                    if (Const.RUNNING.equals(testStatus)) {
+                    if (Const.RUNNING.equals(testStatus) || Const.NOTRUNNING.equals(testStatus) ) {
                         testIsRunning = true;
                     } else {
                         testIsRunning = false;
                     }
                 }else{
-                    testIsRunning = false;
                     throw new IOException();
                 }
             } while (testIsRunning);
@@ -137,30 +131,27 @@ public class ExtensiveTestingTester {
 
             // Get test verdict
 
-            testVerdict = restRequest.testVerdict();
-            //sleep(1);
+            testVerdict = restRequester.testVerdict();
             org.json.JSONObject jsonTestVerdict = new org.json.JSONObject(testVerdict);
             test.setTestVerdict(jsonTestVerdict.getString(Const.TEST_RESULT));
-            logger.write(testVerdict, debugmod); // Json brut
+            logger.write(testVerdict, debugmod); // Raw json
 
 
             // Get test report
 
-            testReport = restRequest.testReport();
-            //sleep(1);
+            testReport = restRequester.testReport();
             org.json.JSONObject jsonTestReport = new org.json.JSONObject(testReport);
             report = jsonTestReport.getString(Const.TEST_REPORT);
             test.setTestReport(report);
-            logger.write(testReport, debugmod); // Json brut
+            logger.write(testReport, debugmod); // Raw json
 
 
             // Logout
 
-            logout = restRequest.logout();
-            //sleep(1);
+            logout = restRequester.logout();
             org.json.JSONObject jsonLogout = new org.json.JSONObject(logout);
             session.setMessage(jsonLogout.getString(Const.MESSAGE));
-            logger.write(logout, debugmod); // Json brut
+            logger.write(logout, debugmod); // Raw json
 
         }
 
@@ -188,19 +179,9 @@ public class ExtensiveTestingTester {
         printReport += "Getting test report" + "\n";
         printReport += "Build duration = " + build.getDurationString() + "\n";
         printReport += "Message = " + session.getMessage() + "\n";
-
-
-
         printReport += HyperlinkNote.encodeTo("/job/" + jobName + "/ws/" + reportName,"Test Report") + "\n";
         printReport += HyperlinkNote.encodeTo("/job/" + jobName + "/ws/" + "log.txt","Log file") + "\n";
 
-
-        /*
-        printReport += "Test Report : " + "\n";
-        printReport += hostUrl + "job/" + jobName + "/ws/" + reportName + "\n";
-        printReport += "Log file : " + "\n";
-        printReport += hostUrl + "job/" + jobName + "/ws/" + "log.txt" + "\n" + "\n";
-        */
 
         /***** Print results and log pages *****/
         logger.write(printReport, printable);
@@ -209,20 +190,5 @@ public class ExtensiveTestingTester {
 
 
     }
-
-    /**
-     * Temporary stop the program
-     *
-     * @param timer
-     */
-    private static void sleep(Integer timer) {
-        timer = timer * 1000;
-        try {
-            Thread.sleep(timer);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }

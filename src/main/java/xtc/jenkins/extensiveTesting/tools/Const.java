@@ -16,6 +16,7 @@ public class Const {
     public static final String TEST_RESULT = "test-result";
     public static final String TEST_REPORT = "test-report";
     public static final String RUNNING = "running";
+    public static final String NOTRUNNING = "not-running";
     public static final String SESSION_ID = "session_id";
     public static final String MESSAGE = "message";
     public static final String PASS = "pass";

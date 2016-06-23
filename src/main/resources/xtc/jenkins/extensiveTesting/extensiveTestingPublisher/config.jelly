@@ -11,19 +11,19 @@
       Creates a text field that shows the value of the "name" property.
       When submitted, it will be passed to the corresponding constructor parameter.
     -->
-    <f:entry title="Extensive Testing Rest API Url (ex : http://172.16.51.246/rest/)" field="serverUrl">
+    <f:entry title="Rest API Url (ex : http://172.16.51.246/rest/)" field="serverUrl">
         <f:textbox/>
     </f:entry>
-    <f:entry title="Extensive Testing Login" field="login">
+    <f:entry title="Login" field="login">
         <f:textbox/>
     </f:entry>
-    <f:entry title="Extensive Testing Password" field="password">
+    <f:entry title="Password" field="password">
         <f:password/>
     </f:entry>
-    <f:entry title="Extensive Testing ProjectName (ex : Common)" field="projectName">
+    <f:entry title="ProjectName (ex : Common)" field="projectName">
         <f:textbox/>
     </f:entry>
-    <f:entry title="Extensive Testing Test Path (ex : /Basics/00_Wait.tux)" field="testPath">
+    <f:entry title="Test Path (ex : /Basics/00_Wait.tux)" field="testPath">
         <f:textbox/>
     </f:entry>
     <f:entry title="Enable debug mode" field="debug">
