@@ -9,9 +9,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+
 public class ApacheHttpClientGet {
 
-    public static String request(String url, String method, String cookie) {
+    public static String request(String url, String method, String sessionCookie) {
         String output = null;
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -19,8 +20,8 @@ public class ApacheHttpClientGet {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpGet getRequest = new HttpGet(url + method);
             getRequest.addHeader(Const.ACCEPT, Const.CONTENT_TYPE);
-            if (null != cookie) {
-                getRequest.addHeader(Const.COOKIE, cookie);
+            if (null != sessionCookie) {
+                getRequest.addHeader(Const.SESSION_COOKIE, sessionCookie);
             }
 
             HttpResponse response = httpClient.execute(getRequest);

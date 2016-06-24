@@ -26,7 +26,7 @@ public class Const {
     public static final String LOGGERFAILED = "Logger does not exist";
     public static final String CONTENT = "Content-Type";
     public static final String CONTENT_TYPE = "application/json";
-    public static final String COOKIE = "Cookie";
+    public static final String SESSION_COOKIE = "Cookie";
     public static final String UTF8 = "UTF-8";
     public static final String DATEFORMAT = "yyyyMMdd_HHmmss";
     public static final String REPORT_SUFIX = "_report.html";

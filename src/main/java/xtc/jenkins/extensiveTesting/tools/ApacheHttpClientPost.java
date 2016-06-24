@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 
 public class ApacheHttpClientPost {
 
-    public static String request(String url, String method, String params, String cookie) {
+    public static String request(String url, String method, String params, String sessionCookie) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
 
@@ -20,8 +20,8 @@ public class ApacheHttpClientPost {
             HttpPost postRequest = new HttpPost(url + method);
 
             StringEntity input = new StringEntity(params);
-            if (null != cookie) {
-                postRequest.addHeader(Const.COOKIE, cookie);
+            if (null != sessionCookie) {
+                postRequest.addHeader(Const.SESSION_COOKIE, sessionCookie);
             }
             input.setContentType(Const.CONTENT_TYPE);
             postRequest.setEntity(input);
