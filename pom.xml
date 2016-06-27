@@ -10,8 +10,8 @@
         <relativePath/>
     </parent>
     <groupId>jenkins.xtc</groupId>
-    <artifactId>extensiveTesting</artifactId>
-    <version>1.4.1-beta</version>
+    <artifactId>extensivetesting</artifactId>
+    <version>1.4.3-beta</version>
     <packaging>hpi</packaging>
     <name>Extensive Testing Plugin</name>
     <description>Allow you to run Extensive Testing tasks.</description>
@@ -51,7 +51,7 @@
         <developer>
             <id>cadorb</id>
             <name>Blaise Cador</name>
-            <email>cadorb@cadorb.fr</email>
+            <email>blaise@goldenk.eu</email>
             <organization>GFI Informatique</organization>
             <organizationUrl>http://www.gfi.fr/</organizationUrl>
             <timezone>Europe/Paris</timezone>
