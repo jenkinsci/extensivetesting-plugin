@@ -15,7 +15,7 @@
     <packaging>hpi</packaging>
     <name>Extensive Testing Plugin</name>
     <description>Allow you to run Extensive Testing tasks.</description>
-    <!--url>http://wiki.jenkins-ci.org/display/JENKINS/Extensive+Testing+Plugin</url-->
+    <url>http://wiki.jenkins-ci.org/display/JENKINS/ExtensiveTesting+Plugin</url>
 
     <properties>
         <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
@@ -40,12 +40,12 @@
         </license>
     </licenses>
 
-    <!--scm>
+    <scm>
         <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
         <tag>HEAD</tag>
-    </scm-->
+    </scm>
 
     <developers>
         <developer>
