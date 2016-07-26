@@ -11,7 +11,7 @@
     </parent>
     <groupId>jenkins.xtc</groupId>
     <artifactId>extensivetesting</artifactId>
-    <version>1.4.3-beta</version>
+    <version>1.4.3-beta-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <name>Extensive Testing Plugin</name>
     <description>Allow you to run Extensive Testing tasks.</description>
